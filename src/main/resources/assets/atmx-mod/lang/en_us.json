@@ -1,0 +1,13 @@
+{
+  "item.atmx-mod.dragon_gem": "Dragon Gem",
+  "item.atmx-mod.fabric_item": "Fabric",
+  "itemgroup.custom": "Custom Items",
+  "block.atmx-mod.dragon_gem_block": "Dragon Gem Block",
+  "block.atmx-mod.dragon_gem_ore": "Dragon Gem Ore",
+  "block.atmx-mod.gem_infuser": "Gem Infuser",
+  "enchantment.atmx-mod.frostbite": "Frostbite",
+  "enchantment.atmx-mod.lifesteal": "Lifesteal",
+  "enchantment.atmx-mod.reaper": "Reaper",
+  "enchantment.atmx-mod.dual_jump": "Dual Jump"
+
+}

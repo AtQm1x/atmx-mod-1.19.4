@@ -22,7 +22,7 @@
 			"com.atmx.AtomixMod.AtmxModClient"
 		],
 		"fabric-datagen": [
-			"com.atmx.AtomixMod.atmxModDataGenerator"
+			"com.atmx.AtomixMod.ModDataGenerator"
 		]
 	},
 	"mixins": [

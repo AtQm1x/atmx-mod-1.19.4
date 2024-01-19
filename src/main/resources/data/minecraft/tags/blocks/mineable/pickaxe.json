@@ -1,0 +1,8 @@
+{
+  "replace": false,
+  "values": [
+    "atmx-mod:dragon_gem_ore",
+    "atmx-mod:dragon_gem_block",
+    "atmx-mod:demo_block"
+  ]
+}

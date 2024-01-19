@@ -1,0 +1,4 @@
+// 1.19.4	2023-11-20T23:10:15.9840538	atmx mod/Block Loot Tables
+da604249cde18ef53fef748e5d132b5549e7f38c data\atmx-mod\loot_tables\blocks\demo_block.json
+eaf4512763fc98f216ec639a00c4f1b1af266c85 data\atmx-mod\loot_tables\blocks\dragon_gem_ore.json
+86f0cd33473d5008b7ae61f45cacedc9f38672f0 data\atmx-mod\loot_tables\blocks\dragon_gem_block.json

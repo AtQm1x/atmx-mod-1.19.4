@@ -1,0 +1,13 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "building",
+  "ingredients": [
+    {
+      "item": "atmx-mod:dragon_gem_block"
+    }
+  ],
+  "result": {
+    "count": 9,
+    "item": "atmx-mod:dragon_gem"
+  }
+}
