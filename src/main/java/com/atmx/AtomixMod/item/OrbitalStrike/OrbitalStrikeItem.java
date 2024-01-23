@@ -28,12 +28,13 @@ import java.util.Random;
 
 
 public class OrbitalStrikeItem extends Item {
+    private final float exRadius = 125;
+    private float cooldownTicks = 0;
+    private double cd;
+
     public OrbitalStrikeItem(Settings settings) {
         super(settings);
     }
-    private final float exRadius = 200;
-    private float cooldownTicks = 0;
-    private double cd;
 
     @Override
     public TypedActionResult<ItemStack> use(World world, PlayerEntity player, Hand hand) {
@@ -52,70 +53,61 @@ public class OrbitalStrikeItem extends Item {
 
         return TypedActionResult.success(player.getStackInHand(hand));
     }
+
     private void yourCustomFunction(World world, BlockPos blockPos, PlayerEntity player) {
         // Your custom logic goes here
-        if (!world.isClient() && cooldownTicks <= 0){
-            cooldownTicks = 20 * 1;
-            atmxMod.LOGGER.info("ran function at: " + blockPos.toString() + " in: " + world.toString());
+        if (!world.isClient() && cooldownTicks <= 0) {
+            cooldownTicks = 20 * 0.5f;
+            //atmxMod.LOGGER.info("ran function at: " + blockPos.toString() + " in: " + world);
             // Inform the player or log the explosion
             player.sendMessage(Text.literal(player.getEntityName() + ": Now I am become Death, the destroyer of worlds."), false);
-            boom(world, blockPos, exRadius);
+            boom((ServerWorld) world, blockPos, exRadius);
             player.sendMessage(Text.literal("Cooldown " + cd + "s"), true);
-        }
-        else if(!world.isClient()){
-            player.sendMessage(Text.literal("Wait " + cd + "s"), true);
+        } else if (!world.isClient()) {
+            player.sendMessage(Text.literal("Cooldown " + cd + "s"), true);
         }
     }
 
-    public void boom(World world, BlockPos blockPos, double radius) {
+    public void boom(ServerWorld world, BlockPos blockPos, double radius) {
         int x = blockPos.getX();
         int y = blockPos.getY();
         int z = blockPos.getZ();
         atmxMod.LOGGER.info("boom at:" + x + " " + y + " " + z);
         int intRadius = (int) Math.ceil(radius);
-        BlockPos.Mutable currentPos = new BlockPos.Mutable();
+        int oldp = blockPos.getX();
 
-        for (int dx = intRadius; dx >= -intRadius; dx--) {
-            for (int dz = intRadius; dz >= -intRadius; dz--) {
-                for (int dy = intRadius; dy >= -intRadius; dy--) {
-                    double distanceSquared = dx * dx + dy * dy + dz * dz;
+        Iterable<BlockPos> Box = BlockPos.iterate(blockPos.add(intRadius, intRadius, intRadius), blockPos.add(-intRadius, -intRadius, -intRadius));
+        for (BlockPos pos : Box) {
+            double distanceSquared = pos.getSquaredDistance(x, y, z);
 
-                    if (distanceSquared <= radius * radius) {
-                        BlockState blockState = world.getBlockState(currentPos);
-                        //int rx = x + dx;
-                        //int ry = y + dy;
-                        //int rz = z + dz;
+            if (distanceSquared <= radius * radius) {
+                BlockState blockState = world.getBlockState(pos);
 
-                        currentPos.set(x + dx, y + dy, z + dz);
+                if (blockState.getBlock() instanceof FluidBlock || blockState.getFluidState().getFluid() instanceof WaterFluid || blockState.getFluidState().getFluid() instanceof LavaFluid) {
+                    // Remove fluids by setting the block state to air
+                    world.setBlockState(pos, Blocks.AIR.getDefaultState(), 2);
+                }
+                if (blockState.getBlock().getBlastResistance() < 100 && !blockState.isAir()) {
+                    // Queue block changes for later processing
+                    world.setBlockState(pos, Blocks.AIR.getDefaultState(), 2);
 
-
-                        if (blockState.getBlock() instanceof FluidBlock || blockState.getFluidState().getFluid() instanceof WaterFluid || blockState.getFluidState().getFluid() instanceof LavaFluid) {
-                            // Remove fluids by setting the block state to air
-                            world.setBlockState(currentPos, Blocks.AIR.getDefaultState(), 2);
-                        } else if (blockState.getBlock().getBlastResistance() < 100
-                                //&& blockState != Blocks.AIR.getDefaultState()
-                                //&& blockState != Blocks.BEDROCK.getDefaultState()
-                                && blockState.getBlock().getBlastResistance() > 0
-                        ) {
-                            // Queue block changes for later processing
-                            world.setBlockState(currentPos, Blocks.AIR.getDefaultState(), 2);
-                            //Random r = new Random();
-                            //// Simulate block drops (modify this based on your custom logic)
-                            //double checkCriteria = r.nextDouble() * blockState.getBlock().getBlastResistance() / intRadius * 20;
-                            //double dropReq = (radius * radius) / (100 * radius / 5 / 3 * 4) + (radius * 1.5 / 100);
+                    Random r = new Random();
+                    // Simulate block drops (modify this based on your custom logic)
+                    double checkCriteria = r.nextDouble() * blockState.getBlock().getBlastResistance() / intRadius * 20;
+                    double dropReq = (radius * radius) / (100 * radius / 5 / 3 * 4) + (radius * 1.5 / 100);
 //
-                            //if (!world.isClient() && checkCriteria >= dropReq * 100000) {
-                            //    BlockPos finalBlockPos = new BlockPos(blockPos.getX(), currentPos.getY(), blockPos.getZ());
-                            //    Block.getDroppedStacks(blockState, (ServerWorld) world, currentPos, world.getBlockEntity(currentPos))
-                            //            .forEach(itemStack -> Block.dropStack(world, finalBlockPos, itemStack));
-                            //}
-                        }
+                    if (!world.isClient() && checkCriteria >= dropReq * 100000) {
+                        BlockPos finalBlockPos = new BlockPos(blockPos.getX(), pos.getY(), blockPos.getZ());
+                        Block.getDroppedStacks(blockState, (ServerWorld) world, pos, world.getBlockEntity(pos))
+                                .forEach(itemStack -> Block.dropStack(world, finalBlockPos, itemStack));
                     }
                 }
             }
-            atmxMod.LOGGER.info( (double)Math.round( (radius - dx) / (2 * radius) * 1000 ) / 10 + "%" );
+            if (oldp != pos.getZ()){
+                atmxMod.LOGGER.info((double) Math.round(((pos.getZ() - z) + radius) / (2 * radius) * 1000) / 10 + "%");
+                oldp = pos.getZ();
+            }
         }
-        System.gc();
         // Notify neighbors after processing all block changes
         world.updateNeighbors(blockPos, world.getBlockState(blockPos).getBlock());
         atmxMod.LOGGER.info("boom complete");
@@ -127,14 +119,15 @@ public class OrbitalStrikeItem extends Item {
         // default white text
         tooltip.add(Text.literal("Cooldown: " + cd + "s"));
         // formatted red text
-        tooltip.add(Text.literal("explosion radius: " + exRadius));
+        tooltip.add(Text.literal("Explosion radius: " + exRadius));
     }
+
     @Override
     public void inventoryTick(ItemStack stack, World world, Entity entity, int slot, boolean selected) {
         super.inventoryTick(stack, world, entity, slot, selected);
 
         if (!world.isClient && entity instanceof PlayerEntity && cooldownTicks >= 0) {
-            cd = Math.max((double)Math.round(cooldownTicks / 2) / 10, 0);
+            cd = Math.max((double) Math.round(cooldownTicks / 2) / 10, 0);
             cooldownTicks--;
         }
     }
