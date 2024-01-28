@@ -98,12 +98,12 @@ public class OrbitalStrikeItem extends Item {
 //
                     if (!world.isClient() && checkCriteria >= dropReq * 100000) {
                         BlockPos finalBlockPos = new BlockPos(blockPos.getX(), pos.getY(), blockPos.getZ());
-                        Block.getDroppedStacks(blockState, (ServerWorld) world, pos, world.getBlockEntity(pos))
+                        Block.getDroppedStacks(blockState, world, pos, world.getBlockEntity(pos))
                                 .forEach(itemStack -> Block.dropStack(world, finalBlockPos, itemStack));
                     }
                 }
             }
-            if (oldp != pos.getZ()){
+            if (oldp != pos.getZ()) {
                 atmxMod.LOGGER.info((double) Math.round(((pos.getZ() - z) + radius) / (2 * radius) * 1000) / 10 + "%");
                 oldp = pos.getZ();
             }

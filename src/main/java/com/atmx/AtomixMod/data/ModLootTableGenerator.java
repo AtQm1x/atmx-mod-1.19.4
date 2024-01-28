@@ -1,9 +1,9 @@
 package com.atmx.AtomixMod.data;
 
+import com.atmx.AtomixMod.block.ModBlocks;
+import com.atmx.AtomixMod.item.ModItems;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricBlockLootTableProvider;
-import com.atmx.AtomixMod.block.*;
-import com.atmx.AtomixMod.item.*;
 
 public class ModLootTableGenerator extends FabricBlockLootTableProvider {
     public ModLootTableGenerator(FabricDataOutput dataOutput) {

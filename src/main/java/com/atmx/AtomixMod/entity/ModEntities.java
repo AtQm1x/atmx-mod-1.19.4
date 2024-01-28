@@ -16,11 +16,11 @@ public class ModEntities {
             new Identifier(atmxMod.MOD_ID, "minion"),
             FabricEntityTypeBuilder.create(SpawnGroup.CREATURE, MinionEntity::new).dimensions(EntityDimensions.fixed(0.75f, 1.75f)).build()
     );
-    public static final EntityType<SuperExplosiveEntity> SUPER_EXPLOSIVE = EntityType.Builder.<SuperExplosiveEntity>create(SuperExplosiveEntity::new, SpawnGroup.MISC)
+    public static final EntityType<SuperExplosiveEntity> SUPER_EXPLOSIVE = EntityType.Builder.create(SuperExplosiveEntity::new, SpawnGroup.MISC)
             .setDimensions(0.25F, 0.25F)
             .build("super_explosive");
 
-    public static void register(){
+    public static void register() {
         FabricDefaultAttributeRegistry.register(MINION, MinionEntity.createMobAttributes());
     }
 }

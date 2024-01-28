@@ -1,7 +1,6 @@
 package com.atmx.AtomixMod.entity;
 
 import net.minecraft.entity.EntityType;
-import net.minecraft.entity.mob.PathAwareEntity;
 import net.minecraft.entity.passive.PassiveEntity;
 import net.minecraft.entity.passive.TameableEntity;
 import net.minecraft.server.world.ServerWorld;

@@ -14,11 +14,12 @@ import net.minecraft.util.shape.VoxelShapes;
 import net.minecraft.world.BlockView;
 import net.minecraft.world.World;
 
-public class DemoBlock extends Block{
+public class DemoBlock extends Block {
 
     public DemoBlock(Settings settings) {
         super(settings);
     }
+
     @Override
     public VoxelShape getOutlineShape(BlockState state, BlockView view, BlockPos pos, ShapeContext context) {
         return VoxelShapes.cuboid(0f, 0f, 0f, 1f, 1.0f, 1.0f);

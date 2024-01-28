@@ -15,19 +15,22 @@ public class ModItems {
             new Item(new FabricItemSettings()));
     public static final Item ORBITAL_STRIKE_ITEM = registerItem("orbital_strike_item",
             new OrbitalStrikeItem(new FabricItemSettings()));
-    private static Item registerItem(String name, Item item){
-        return Registry.register(Registries.ITEM,new Identifier(atmxMod.MOD_ID,name),item);
+
+    private static Item registerItem(String name, Item item) {
+        return Registry.register(Registries.ITEM, new Identifier(atmxMod.MOD_ID, name), item);
     }
-    public static void addItemsToItemGroup(){
-        addToItemGroup(ModItemGroup.moai,DRAGON_GEM);
-        addToItemGroup(ModItemGroup.moai,ORBITAL_STRIKE_ITEM);
+
+    public static void addItemsToItemGroup() {
+        addToItemGroup(ModItemGroup.moai, DRAGON_GEM);
+        addToItemGroup(ModItemGroup.moai, ORBITAL_STRIKE_ITEM);
 
     }
-    public static final void addToItemGroup(ItemGroup group,Item item){
+
+    public static final void addToItemGroup(ItemGroup group, Item item) {
         ItemGroupEvents.modifyEntriesEvent(group).register(entries -> entries.add(item));
     }
 
-    public static void registerModItems(){
+    public static void registerModItems() {
         //this runs on initialize so almost anything must be here
         atmxMod.LOGGER.info("Registering Mod Items for " + atmxMod.MOD_ID);
 

@@ -1,11 +1,12 @@
 package com.atmx.AtomixMod.data;
 
+import com.atmx.AtomixMod.atmxMod;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricDynamicRegistryProvider;
 import net.minecraft.registry.RegistryKeys;
 import net.minecraft.registry.RegistryWrapper;
+
 import java.util.concurrent.CompletableFuture;
-import com.atmx.AtomixMod.atmxMod;
 
 public class ModWorldGenerator extends FabricDynamicRegistryProvider {
     public ModWorldGenerator(FabricDataOutput output, CompletableFuture<RegistryWrapper.WrapperLookup> registriesFuture) {

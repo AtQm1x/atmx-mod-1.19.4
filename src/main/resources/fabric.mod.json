@@ -1,44 +1,44 @@
 {
-	"schemaVersion": 1,
-	"id": "atmx-mod",
-	"version": "${version}",
-	"name": "atmx mod",
-	"description": "This is an example description! Tell everyone what your mod is about!",
-	"authors": [
-		"_Atomix__"
-	],
-	"contact": {
-		"homepage": "https://fabricmc.net/",
-		"sources": "https://github.com/FabricMC/fabric-example-mod"
-	},
-	"license": "CC0-1.0",
-	"icon": "assets/atmx-mod/icon.png",
-	"environment": "*",
-	"entrypoints": {
-		"main": [
-			"com.atmx.AtomixMod.atmxMod"
-		],
-		"client": [
-			"com.atmx.AtomixMod.AtmxModClient"
-		],
-		"fabric-datagen": [
-			"com.atmx.AtomixMod.ModDataGenerator"
-		]
-	},
-	"mixins": [
-		"atmx-mod.mixins.json",
-		{
-			"config": "atmx-mod.client.mixins.json",
-			"environment": "client"
-		}
-	],
-	"depends": {
-		"fabricloader": ">=0.14.21",
-		"minecraft": "~1.19.4",
-		"java": ">=17",
-		"fabric-api": "*"
-	},
-	"suggests": {
-		"another-mod": "*"
-	}
+  "schemaVersion": 1,
+  "id": "atmx-mod",
+  "version": "${version}",
+  "name": "atmx mod",
+  "description": "This is an example description! Tell everyone what your mod is about!",
+  "authors": [
+    "_Atomix__"
+  ],
+  "contact": {
+    "homepage": "https://fabricmc.net/",
+    "sources": "https://github.com/FabricMC/fabric-example-mod"
+  },
+  "license": "CC0-1.0",
+  "icon": "assets/atmx-mod/icon.png",
+  "environment": "*",
+  "entrypoints": {
+    "main": [
+      "com.atmx.AtomixMod.atmxMod"
+    ],
+    "client": [
+      "com.atmx.AtomixMod.AtmxModClient"
+    ],
+    "fabric-datagen": [
+      "com.atmx.AtomixMod.ModDataGenerator"
+    ]
+  },
+  "mixins": [
+    "atmx-mod.mixins.json",
+    {
+      "config": "atmx-mod.client.mixins.json",
+      "environment": "client"
+    }
+  ],
+  "depends": {
+    "fabricloader": ">=0.14.21",
+    "minecraft": "~1.19.4",
+    "java": ">=17",
+    "fabric-api": "*"
+  },
+  "suggests": {
+    "another-mod": "*"
+  }
 }
