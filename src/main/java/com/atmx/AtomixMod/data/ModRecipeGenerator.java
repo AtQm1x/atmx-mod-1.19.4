@@ -10,7 +10,6 @@ import net.minecraft.item.Items;
 import net.minecraft.recipe.book.RecipeCategory;
 import net.minecraft.util.Identifier;
 
-import java.util.List;
 import java.util.function.Consumer;
 
 public class ModRecipeGenerator extends FabricRecipeProvider {

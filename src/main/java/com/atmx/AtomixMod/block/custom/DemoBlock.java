@@ -1,8 +1,11 @@
 package com.atmx.AtomixMod.block.custom;
 
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.ShapeContext;
+import com.atmx.AtomixMod.block.entity.DragonDrill;
+import com.atmx.AtomixMod.block.entity.modBlockEntities;
+import net.minecraft.block.*;
+import net.minecraft.block.entity.BlockEntity;
+import net.minecraft.block.entity.BlockEntityTicker;
+import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.text.Text;
 import net.minecraft.util.ActionResult;
@@ -13,12 +16,14 @@ import net.minecraft.util.shape.VoxelShape;
 import net.minecraft.util.shape.VoxelShapes;
 import net.minecraft.world.BlockView;
 import net.minecraft.world.World;
+import org.jetbrains.annotations.Nullable;
 
-public class DemoBlock extends Block{
+public class DemoBlock extends BlockWithEntity implements BlockEntityProvider {
 
     public DemoBlock(Settings settings) {
         super(settings);
     }
+
     @Override
     public VoxelShape getOutlineShape(BlockState state, BlockView view, BlockPos pos, ShapeContext context) {
         return VoxelShapes.cuboid(0f, 0f, 0f, 1f, 1.0f, 1.0f);
@@ -30,5 +35,20 @@ public class DemoBlock extends Block{
             player.sendMessage(Text.of("Hello, world!" + player.getName()), false);
         }
         return ActionResult.SUCCESS;
+    }
+
+    @Nullable
+    @Override
+    public BlockEntity createBlockEntity(BlockPos pos, BlockState state) {
+        return new DragonDrill(pos, state);
+    }
+    @Override
+    public BlockRenderType getRenderType(BlockState state) {
+        // With inheriting from BlockWithEntity this defaults to INVISIBLE, so we need to change that!
+        return BlockRenderType.MODEL;
+    }
+    @Override
+    public <T extends BlockEntity> BlockEntityTicker<T> getTicker(World world, BlockState state, BlockEntityType<T> type) {
+        return checkType(type, modBlockEntities.DEMO_BLOCK_ENTITY, (world1, pos, state1, be) -> DragonDrill.tick(world1, pos, state1, be));
     }
 }

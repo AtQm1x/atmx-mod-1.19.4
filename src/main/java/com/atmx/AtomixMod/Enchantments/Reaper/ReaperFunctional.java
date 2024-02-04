@@ -1,22 +1,18 @@
 package com.atmx.AtomixMod.Enchantments.Reaper;
 
-import net.minecraft.entity.Entity;
+import com.atmx.AtomixMod.entity.MinionEntity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.passive.WolfEntity;
+import net.minecraft.entity.passive.TameableEntity;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NbtCompound;
-import net.minecraft.nbt.NbtList;
 import net.minecraft.text.Text;
-import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 
 public class ReaperFunctional {
-    public static void SummonEntity(PlayerEntity user, LivingEntity target){
-        World world = user.getWorld();
+    public static void SummonEntity(PlayerEntity user, LivingEntity target, World world) {
         EntityType targetType = target.getType();
-        LivingEntity entity = new WolfEntity(targetType, world);
+        MinionEntity entity = new MinionEntity(targetType, target.getWorld());
+        entity.setOwner(user);
 
         entity.setHealth(target.getMaxHealth());
         entity.setHeadYaw(target.headYaw);

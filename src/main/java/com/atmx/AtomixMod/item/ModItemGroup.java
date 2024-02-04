@@ -9,8 +9,9 @@ import net.minecraft.util.Identifier;
 
 public class ModItemGroup {
     public static ItemGroup moai;
-    public static void registerItemGroups(){
-        moai = FabricItemGroup.builder(new Identifier(atmxMod.MOD_ID,"custom"))
+
+    public static void registerItemGroups() {
+        moai = FabricItemGroup.builder(new Identifier(atmxMod.MOD_ID, "custom"))
                 .displayName(Text.translatable("itemgroup.custom"))
                 .icon(() -> new ItemStack(ModItems.DRAGON_GEM)).build();
     }

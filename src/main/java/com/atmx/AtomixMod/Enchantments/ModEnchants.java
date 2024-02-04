@@ -15,13 +15,14 @@ public class ModEnchants {
     public static Enchantment REAPER = new Reaper();
     public static Enchantment DUALJUMP = new DualJump();
     public static Enchantment CLOUDFALL = new CloudFall();
-    public static void registerModEnchants(){
+
+    public static void registerModEnchants() {
         atmxMod.LOGGER.info("Registering Mod Enchantments for " + atmxMod.MOD_ID);
 
-        Registry.register(Registries.ENCHANTMENT,new Identifier(atmxMod.MOD_ID,"frostbite"), FROSTBITE);
-        Registry.register(Registries.ENCHANTMENT,new Identifier(atmxMod.MOD_ID,"lifesteal"), LIFESTEAL);
-        Registry.register(Registries.ENCHANTMENT,new Identifier(atmxMod.MOD_ID,"reaper"), REAPER);
-        Registry.register(Registries.ENCHANTMENT,new Identifier(atmxMod.MOD_ID,"dual_jump"), DUALJUMP);
-        Registry.register(Registries.ENCHANTMENT,new Identifier(atmxMod.MOD_ID,"cloud_fall"), CLOUDFALL);
+        Registry.register(Registries.ENCHANTMENT, new Identifier(atmxMod.MOD_ID, "frostbite"), FROSTBITE);
+        Registry.register(Registries.ENCHANTMENT, new Identifier(atmxMod.MOD_ID, "lifesteal"), LIFESTEAL);
+        Registry.register(Registries.ENCHANTMENT, new Identifier(atmxMod.MOD_ID, "reaper"), REAPER);
+        Registry.register(Registries.ENCHANTMENT, new Identifier(atmxMod.MOD_ID, "dual_jump"), DUALJUMP);
+        Registry.register(Registries.ENCHANTMENT, new Identifier(atmxMod.MOD_ID, "cloud_fall"), CLOUDFALL);
     }
 }

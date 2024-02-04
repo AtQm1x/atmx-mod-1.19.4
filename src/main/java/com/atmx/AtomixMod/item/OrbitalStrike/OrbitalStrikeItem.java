@@ -1,6 +1,7 @@
 package com.atmx.AtomixMod.item.OrbitalStrike;
 
 import com.atmx.AtomixMod.atmxMod;
+import com.atmx.AtomixMod.gamerules.ModGamerules;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
@@ -24,11 +25,12 @@ import net.minecraft.world.RaycastContext;
 import net.minecraft.world.World;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.Random;
 
 
 public class OrbitalStrikeItem extends Item {
-    private final float exRadius = 125;
+    private int exRadius = 1;
     private float cooldownTicks = 0;
     private double cd;
 
@@ -68,15 +70,14 @@ public class OrbitalStrikeItem extends Item {
         }
     }
 
-    public void boom(ServerWorld world, BlockPos blockPos, double radius) {
+    public void boom(ServerWorld world, BlockPos blockPos, int radius) {
         int x = blockPos.getX();
         int y = blockPos.getY();
         int z = blockPos.getZ();
         atmxMod.LOGGER.info("boom at:" + x + " " + y + " " + z);
-        int intRadius = (int) Math.ceil(radius);
         int oldp = blockPos.getX();
 
-        Iterable<BlockPos> Box = BlockPos.iterate(blockPos.add(intRadius, intRadius, intRadius), blockPos.add(-intRadius, -intRadius, -intRadius));
+        Iterable<BlockPos> Box = BlockPos.iterate(blockPos.add(radius, radius, radius), blockPos.add(-radius, -radius, -radius));
         for (BlockPos pos : Box) {
             double distanceSquared = pos.getSquaredDistance(x, y, z);
 
@@ -93,18 +94,18 @@ public class OrbitalStrikeItem extends Item {
 
                     Random r = new Random();
                     // Simulate block drops (modify this based on your custom logic)
-                    double checkCriteria = r.nextDouble() * blockState.getBlock().getBlastResistance() / intRadius * 20;
-                    double dropReq = (radius * radius) / (100 * radius / 5 / 3 * 4) + (radius * 1.5 / 100);
+                    double checkCriteria = r.nextDouble() * blockState.getBlock().getBlastResistance() / radius * 20;
+                    double dropReq = (double) (radius * radius) / ((double) (100 * radius) / 5 / 3 * 4) + (radius * 1.5 / 100);
 //
                     if (!world.isClient() && checkCriteria >= dropReq * 100000) {
                         BlockPos finalBlockPos = new BlockPos(blockPos.getX(), pos.getY(), blockPos.getZ());
-                        Block.getDroppedStacks(blockState, (ServerWorld) world, pos, world.getBlockEntity(pos))
+                        Block.getDroppedStacks(blockState, world, pos, world.getBlockEntity(pos))
                                 .forEach(itemStack -> Block.dropStack(world, finalBlockPos, itemStack));
                     }
                 }
             }
-            if (oldp != pos.getZ()){
-                atmxMod.LOGGER.info((double) Math.round(((pos.getZ() - z) + radius) / (2 * radius) * 1000) / 10 + "%");
+            if (oldp != pos.getZ()) {
+                atmxMod.LOGGER.info((double) Math.round((float) ((pos.getZ() - z) + radius) / (2 * radius) * 1000) / 10 + "%");
                 oldp = pos.getZ();
             }
         }
@@ -125,7 +126,10 @@ public class OrbitalStrikeItem extends Item {
     @Override
     public void inventoryTick(ItemStack stack, World world, Entity entity, int slot, boolean selected) {
         super.inventoryTick(stack, world, entity, slot, selected);
-
+        if (!world.isClient) {
+            exRadius = Objects.requireNonNull(world.getServer()).getGameRules()
+                    .getInt(ModGamerules.ORBITAL_STRIKE_RANGE);
+        }
         if (!world.isClient && entity instanceof PlayerEntity && cooldownTicks >= 0) {
             cd = Math.max((double) Math.round(cooldownTicks / 2) / 10, 0);
             cooldownTicks--;
