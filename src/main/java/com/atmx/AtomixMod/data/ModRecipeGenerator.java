@@ -20,7 +20,7 @@ public class ModRecipeGenerator extends FabricRecipeProvider {
     @Override
     public void generate(Consumer<RecipeJsonProvider> exporter) {
 
-        offerReversibleCompactingRecipes(exporter, RecipeCategory.BUILDING_BLOCKS, ModItems.DRAGON_GEM, RecipeCategory.DECORATIONS,
+        offerReversibleCompactingRecipes(exporter, RecipeCategory.BUILDING_BLOCKS, ModItems.DRAGON_GEM_ITEM, RecipeCategory.DECORATIONS,
                 ModBlocks.DRAGON_GEM_BLOCK);
 
         // JUST AN EXAMPLE
@@ -29,11 +29,11 @@ public class ModRecipeGenerator extends FabricRecipeProvider {
                 .pattern("SCS")
                 .pattern("SSS")
                 .input('S', Items.END_STONE)
-                .input('C', ModItems.DRAGON_GEM)
+                .input('C', ModItems.DRAGON_GEM_ITEM)
                 .criterion(FabricRecipeProvider.hasItem(Items.END_STONE),
                         FabricRecipeProvider.conditionsFromItem(Items.END_STONE))
-                .criterion(FabricRecipeProvider.hasItem(ModItems.DRAGON_GEM),
-                        FabricRecipeProvider.conditionsFromItem(ModItems.DRAGON_GEM))
+                .criterion(FabricRecipeProvider.hasItem(ModItems.DRAGON_GEM_ITEM),
+                        FabricRecipeProvider.conditionsFromItem(ModItems.DRAGON_GEM_ITEM))
                 .offerTo(exporter, new Identifier(FabricRecipeProvider.getRecipeName(ModBlocks.DRAGON_GEM_ORE)));
     }
 }

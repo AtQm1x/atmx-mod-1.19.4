@@ -3,7 +3,6 @@ package com.atmx.AtomixMod.Enchantments.Reaper;
 import com.atmx.AtomixMod.entity.MinionEntity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.passive.TameableEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.text.Text;
 import net.minecraft.world.World;

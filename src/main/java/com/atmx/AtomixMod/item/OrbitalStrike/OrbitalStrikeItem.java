@@ -30,9 +30,9 @@ import java.util.Random;
 
 
 public class OrbitalStrikeItem extends Item {
+    private final double cd = 0;
+    int cdticks = 0;
     private int exRadius = 1;
-    private float cooldownTicks = 0;
-    private double cd;
 
     public OrbitalStrikeItem(Settings settings) {
         super(settings);
@@ -40,6 +40,9 @@ public class OrbitalStrikeItem extends Item {
 
     @Override
     public TypedActionResult<ItemStack> use(World world, PlayerEntity player, Hand hand) {
+        if (world.isClient) {
+            return TypedActionResult.fail(player.getStackInHand(hand));
+        }
         double reachDistance = 10000.0; // Adjust this value as needed
         Vec3d rotation = player.getRotationVec(1.0F);
         Vec3d start = new Vec3d(player.getX(), player.getEyeY(), player.getZ());
@@ -48,25 +51,23 @@ public class OrbitalStrikeItem extends Item {
         BlockHitResult hitResult = world.raycast(new RaycastContext(start, end, RaycastContext.ShapeType.OUTLINE, RaycastContext.FluidHandling.NONE, player));
 
         if (hitResult.getType() == HitResult.Type.BLOCK) {
+            player.getItemCooldownManager().set(this, 20);
             BlockPos blockPos = hitResult.getBlockPos();
             // Run your function at the intersection point (blockPos)
             yourCustomFunction(world, blockPos, player);
+            return TypedActionResult.fail(player.getStackInHand(hand));
+        } else {
+            return TypedActionResult.fail(player.getStackInHand(hand));
         }
-
-        return TypedActionResult.success(player.getStackInHand(hand));
     }
 
     private void yourCustomFunction(World world, BlockPos blockPos, PlayerEntity player) {
         // Your custom logic goes here
-        if (!world.isClient() && cooldownTicks <= 0) {
-            cooldownTicks = 20 * 0.5f;
+        if (!world.isClient()) {
             //atmxMod.LOGGER.info("ran function at: " + blockPos.toString() + " in: " + world);
             // Inform the player or log the explosion
-            player.sendMessage(Text.literal(player.getEntityName() + ": Now I am become Death, the destroyer of worlds."), false);
+            player.sendMessage(Text.literal("<" + player.getEntityName() + "> Now I am become Death, the destroyer of worlds."), false);
             boom((ServerWorld) world, blockPos, exRadius);
-            player.sendMessage(Text.literal("Cooldown " + cd + "s"), true);
-        } else if (!world.isClient()) {
-            player.sendMessage(Text.literal("Cooldown " + cd + "s"), true);
         }
     }
 
@@ -74,7 +75,7 @@ public class OrbitalStrikeItem extends Item {
         int x = blockPos.getX();
         int y = blockPos.getY();
         int z = blockPos.getZ();
-        atmxMod.LOGGER.info("boom at:" + x + " " + y + " " + z);
+
         int oldp = blockPos.getX();
 
         Iterable<BlockPos> Box = BlockPos.iterate(blockPos.add(radius, radius, radius), blockPos.add(-radius, -radius, -radius));
@@ -117,8 +118,6 @@ public class OrbitalStrikeItem extends Item {
 
     @Override
     public void appendTooltip(ItemStack itemStack, World world, List<Text> tooltip, TooltipContext tooltipContext) {
-        // default white text
-        tooltip.add(Text.literal("Cooldown: " + cd + "s"));
         // formatted red text
         tooltip.add(Text.literal("Explosion radius: " + exRadius));
     }
@@ -130,9 +129,8 @@ public class OrbitalStrikeItem extends Item {
             exRadius = Objects.requireNonNull(world.getServer()).getGameRules()
                     .getInt(ModGamerules.ORBITAL_STRIKE_RANGE);
         }
-        if (!world.isClient && entity instanceof PlayerEntity && cooldownTicks >= 0) {
-            cd = Math.max((double) Math.round(cooldownTicks / 2) / 10, 0);
-            cooldownTicks--;
+        if (!world.isClient && entity instanceof PlayerEntity) {
+
         }
     }
 }

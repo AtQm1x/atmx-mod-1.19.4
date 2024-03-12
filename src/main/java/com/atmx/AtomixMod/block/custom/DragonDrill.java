@@ -1,6 +1,6 @@
 package com.atmx.AtomixMod.block.custom;
 
-import com.atmx.AtomixMod.block.entity.DragonDrill;
+import com.atmx.AtomixMod.block.entity.DragonDrillEntity;
 import com.atmx.AtomixMod.block.entity.modBlockEntities;
 import net.minecraft.block.*;
 import net.minecraft.block.entity.BlockEntity;
@@ -18,9 +18,9 @@ import net.minecraft.world.BlockView;
 import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
 
-public class DemoBlock extends BlockWithEntity implements BlockEntityProvider {
+public class DragonDrill extends BlockWithEntity implements BlockEntityProvider {
 
-    public DemoBlock(Settings settings) {
+    public DragonDrill(Settings settings) {
         super(settings);
     }
 
@@ -40,15 +40,17 @@ public class DemoBlock extends BlockWithEntity implements BlockEntityProvider {
     @Nullable
     @Override
     public BlockEntity createBlockEntity(BlockPos pos, BlockState state) {
-        return new DragonDrill(pos, state);
+        return new DragonDrillEntity(pos, state);
     }
+
     @Override
     public BlockRenderType getRenderType(BlockState state) {
         // With inheriting from BlockWithEntity this defaults to INVISIBLE, so we need to change that!
         return BlockRenderType.MODEL;
     }
+
     @Override
     public <T extends BlockEntity> BlockEntityTicker<T> getTicker(World world, BlockState state, BlockEntityType<T> type) {
-        return checkType(type, modBlockEntities.DEMO_BLOCK_ENTITY, (world1, pos, state1, be) -> DragonDrill.tick(world1, pos, state1, be));
+        return checkType(type, modBlockEntities.DEMO_BLOCK_ENTITY, DragonDrillEntity::tick);
     }
 }

@@ -13,8 +13,8 @@ public class ModLootTableGenerator extends FabricBlockLootTableProvider {
     @Override
     public void generate() {
         addDrop(ModBlocks.DRAGON_GEM_BLOCK);
-        addDrop(ModBlocks.DEMO_BLOCK);
+        addDrop(ModBlocks.DRAGON_DRILL);
 
-        addDrop(ModBlocks.DRAGON_GEM_ORE, oreDrops(ModBlocks.DRAGON_GEM_ORE, ModItems.DRAGON_GEM));
+        addDrop(ModBlocks.DRAGON_GEM_ORE, oreDrops(ModBlocks.DRAGON_GEM_ORE, ModItems.DRAGON_GEM_ITEM));
     }
 }

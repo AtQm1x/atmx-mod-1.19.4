@@ -11,18 +11,22 @@ import net.minecraft.registry.Registry;
 import net.minecraft.util.Identifier;
 
 public class ModItems {
-    public static final Item DRAGON_GEM = registerItem("dragon_gem",
+    public static final Item DRAGON_GEM_ITEM = registerItem("dragon_gem",
             new Item(new FabricItemSettings()));
     public static final Item ORBITAL_STRIKE_ITEM = registerItem("orbital_strike_item",
             new OrbitalStrikeItem(new FabricItemSettings()));
+
+    public static final Item ENERGY_CELL_ITEM = registerItem("energy_cell_item",
+            new Item(new FabricItemSettings()));
 
     private static Item registerItem(String name, Item item) {
         return Registry.register(Registries.ITEM, new Identifier(atmxMod.MOD_ID, name), item);
     }
 
     public static void addItemsToItemGroup() {
-        addToItemGroup(ModItemGroup.moai, DRAGON_GEM);
-        addToItemGroup(ModItemGroup.moai, ORBITAL_STRIKE_ITEM);
+        addToItemGroup(ModItemGroup.TMX_ITEM_GROUP, DRAGON_GEM_ITEM);
+        addToItemGroup(ModItemGroup.TMX_ITEM_GROUP, ORBITAL_STRIKE_ITEM);
+        addToItemGroup(ModItemGroup.TMX_ITEM_GROUP, ENERGY_CELL_ITEM);
 
     }
 

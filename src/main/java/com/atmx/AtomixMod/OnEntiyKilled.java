@@ -23,7 +23,7 @@ public class OnEntiyKilled {
                     switch (id) {
                         case "atmx-mod:reaper":
                             if (Math.random() <= 0.125 * level) {
-                                ReaperFunctional.SummonEntity(player, killedEntity,world);
+                                ReaperFunctional.SummonEntity(player, killedEntity, world);
                             }
                             break;
                     }
