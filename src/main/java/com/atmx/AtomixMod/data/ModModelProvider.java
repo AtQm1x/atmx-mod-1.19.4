@@ -18,6 +18,7 @@ public class ModModelProvider extends FabricModelProvider {
     public void generateBlockStateModels(BlockStateModelGenerator blockStateModelGenerator) {
         blockStateModelGenerator.registerCubeAllModelTexturePool(ModBlocks.DRAGON_GEM_BLOCK);
         blockStateModelGenerator.registerCubeAllModelTexturePool(ModBlocks.DRAGON_GEM_ORE);
+        blockStateModelGenerator.registerItemModel(ModBlocks.DRAGON_DRILL);
     }
 
     @Override

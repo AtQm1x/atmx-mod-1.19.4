@@ -2,7 +2,6 @@ package com.atmx.AtomixMod.item.OrbitalStrike;
 
 import com.atmx.AtomixMod.atmxMod;
 import com.atmx.AtomixMod.gamerules.ModGamerules;
-import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.block.FluidBlock;
@@ -24,9 +23,9 @@ import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.RaycastContext;
 import net.minecraft.world.World;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
-import java.util.Random;
 
 
 public class OrbitalStrikeItem extends Item {
@@ -78,41 +77,52 @@ public class OrbitalStrikeItem extends Item {
 
         int oldp = blockPos.getX();
 
-        Iterable<BlockPos> Box = BlockPos.iterate(blockPos.add(radius, radius, radius), blockPos.add(-radius, -radius, -radius));
-        for (BlockPos pos : Box) {
-            double distanceSquared = pos.getSquaredDistance(x, y, z);
+        Iterable<BlockPos> offsetBox = BlockPos.iterate(new BlockPos(0, 0, 0), new BlockPos(radius, radius, radius));
+        for (BlockPos offsetPos : offsetBox) {
+
+            double distanceSquared = (offsetPos.getSquaredDistance(x, y, z));
 
             if (distanceSquared <= radius * radius) {
-                BlockState blockState = world.getBlockState(pos);
 
-                if (blockState.getBlock() instanceof FluidBlock || blockState.getFluidState().getFluid() instanceof WaterFluid || blockState.getFluidState().getFluid() instanceof LavaFluid) {
-                    // Remove fluids by setting the block state to air
-                    world.setBlockState(pos, Blocks.AIR.getDefaultState(), 2);
-                }
-                if (blockState.getBlock().getBlastResistance() < 100 && !blockState.isAir()) {
-                    // Queue block changes for later processing
-                    world.setBlockState(pos, Blocks.AIR.getDefaultState(), 2);
+                BlockPos bp = new BlockPos(offsetPos.getX(), offsetPos.getY(), offsetPos.getZ());
+                BlockState blockState = world.getBlockState(bp);
 
-                    Random r = new Random();
-                    // Simulate block drops (modify this based on your custom logic)
-                    double checkCriteria = r.nextDouble() * blockState.getBlock().getBlastResistance() / radius * 20;
-                    double dropReq = (double) (radius * radius) / ((double) (100 * radius) / 5 / 3 * 4) + (radius * 1.5 / 100);
-//
-                    if (!world.isClient() && checkCriteria >= dropReq * 100000) {
-                        BlockPos finalBlockPos = new BlockPos(blockPos.getX(), pos.getY(), blockPos.getZ());
-                        Block.getDroppedStacks(blockState, world, pos, world.getBlockEntity(pos))
-                                .forEach(itemStack -> Block.dropStack(world, finalBlockPos, itemStack));
-                    }
-                }
+                explosionBreakBlock(blockState, world, blockPos.add(offsetPos.getX(),-offsetPos.getY(),offsetPos.getZ()));
+                explosionBreakBlock(blockState, world, blockPos.add(-offsetPos.getX(),-offsetPos.getY(),offsetPos.getZ()));
+                explosionBreakBlock(blockState, world, blockPos.add(offsetPos.getX(),-offsetPos.getY(),-offsetPos.getZ()));
+                explosionBreakBlock(blockState, world, blockPos.add(-offsetPos.getX(),-offsetPos.getY(),-offsetPos.getZ()));
+
             }
-            if (oldp != pos.getZ()) {
-                atmxMod.LOGGER.info((double) Math.round((float) ((pos.getZ() - z) + radius) / (2 * radius) * 1000) / 10 + "%");
-                oldp = pos.getZ();
+            if (oldp != offsetPos.getZ()) {
+                atmxMod.LOGGER.info((double) Math.round((float) ((offsetPos.getZ() - z) + radius) / (2 * radius) * 1000) / 10 + "%");
+                oldp = offsetPos.getZ();
             }
         }
         // Notify neighbors after processing all block changes
         world.updateNeighbors(blockPos, world.getBlockState(blockPos).getBlock());
         atmxMod.LOGGER.info("boom complete");
+    }
+
+    private void explosionBreakBlock(BlockState b, ServerWorld world, BlockPos pos) {
+        if (b.getBlock() instanceof FluidBlock || b.getFluidState().getFluid() instanceof WaterFluid || b.getFluidState().getFluid() instanceof LavaFluid) {
+            // Remove fluids by setting the block state to air
+            world.setBlockState(pos, Blocks.AIR.getDefaultState(), 2);
+        }
+        if (b.getBlock().getBlastResistance() < 100 && !b.isAir()) {
+            // Queue block changes for later processing
+            world.setBlockState(pos, Blocks.AIR.getDefaultState(), 2);
+
+            //Random r = new Random();
+            // Simulate block drops (modify this based on your custom logic)
+            //double checkCriteria = r.nextDouble() * b.getBlock().getBlastResistance() / radius * 20;
+            // dropReq = (double) (radius * radius) / ((double) (100 * radius) / 5 / 3 * 4) + (radius * 1.5 / 100);
+//
+            //if (!world.isClient() && checkCriteria >= dropReq * 100000) {
+            //    BlockPos finalBlockPos = new BlockPos(blockPos.getX(), offsetPos.getY(), blockPos.getZ());
+            //    Block.getDroppedStacks(blockState, world, offsetPos, world.getBlockEntity(offsetPos))
+            //            .forEach(itemStack -> Block.dropStack(world, finalBlockPos, itemStack));
+            //}
+        }
     }
 
 

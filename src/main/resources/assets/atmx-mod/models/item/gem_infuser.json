@@ -1,11 +1,11 @@
 {
 	"credit": "Made with Blockbench",
 	"textures": {
-		"0": "Infusing_table_top",
-		"1": "infusing_table_side",
-		"2": "chiselled_smooth_stone",
+		"0": "atmx-mod:Infusing_table_top",
+		"1": "atmx-mod:infusing_table_side",
+		"2": "atmx-mod:chiselled_smooth_stone",
 		"3": "block/netherite_block",
-		"particle": "Infusing_table_top"
+		"particle": "atmx-mod:Infusing_table_top"
 	},
 	"elements": [
 		{
