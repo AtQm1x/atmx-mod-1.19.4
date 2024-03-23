@@ -4,6 +4,7 @@ import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.block.FluidBlock;
 import net.minecraft.block.entity.BlockEntity;
+import net.minecraft.entity.Entity;
 import net.minecraft.fluid.LavaFluid;
 import net.minecraft.fluid.WaterFluid;
 import net.minecraft.nbt.NbtCompound;
@@ -24,7 +25,7 @@ public class DragonDrillEntity extends BlockEntity {
 
     public static void tick(World world, BlockPos pos, BlockState state, DragonDrillEntity be) {
         ctick++;
-        if (ctick >= delay) {
+        if (ctick > delay) {
 
             BlockPos bp = new BlockPos(pos.getX(), pos.getY() - 1, pos.getZ());
             BlockState bs = world.getBlockState(bp);
@@ -36,8 +37,7 @@ public class DragonDrillEntity extends BlockEntity {
             }
             if (bs.getBlock().getBlastResistance() < 100 && !bs.isAir()) {
 
-                world.breakBlock(bp, true);
-                world.updateListeners(bp, bs, Blocks.AIR.getDefaultState(), 1);
+                world.removeBlock(bp, true);
                 ctick = 0;
             }
         }

@@ -1,9 +1,9 @@
 {
 	"credit": "Made with Blockbench",
 	"textures": {
-		"1": "energy_cell_frame.png",
-		"2": "energy_cell_core.png",
-		"particle": "energy_cell_frame"
+		"1": "atmx-mod:item/energy_cell_frame",
+		"2": "atmx-mod:item/energy_cell_core",
+		"particle": "atmx-mod:item/energy_cell_frame"
 	},
 	"elements": [
 		{

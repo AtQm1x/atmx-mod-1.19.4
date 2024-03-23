@@ -16,7 +16,7 @@ public class modBlockEntities {
     public static void register() {
         DEMO_BLOCK_ENTITY = Registry.register(
                 Registries.BLOCK_ENTITY_TYPE,
-                new Identifier(atmxMod.MOD_ID, "demo_block_entity"),
+                new Identifier(atmxMod.MOD_ID, "dragon_drill_block_entity"),
                 FabricBlockEntityTypeBuilder.create(DragonDrillEntity::new, DRAGON_DRILL).build()
         );
     }
