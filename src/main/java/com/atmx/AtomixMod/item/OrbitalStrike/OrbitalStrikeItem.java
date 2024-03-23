@@ -96,6 +96,7 @@ public class OrbitalStrikeItem extends Item {
             if (oldp != offsetPos.getZ()) {
                 atmxMod.LOGGER.info((double) Math.round((float) ((offsetPos.getZ() - z) + radius) / (2 * radius) * 1000) / 10 + "%");
                 oldp = offsetPos.getZ();
+                //test
             }
         }
         // Notify neighbors after processing all block changes
