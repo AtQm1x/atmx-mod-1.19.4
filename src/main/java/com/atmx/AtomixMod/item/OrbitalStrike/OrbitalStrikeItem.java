@@ -80,17 +80,22 @@ public class OrbitalStrikeItem extends Item {
         Iterable<BlockPos> offsetBox = BlockPos.iterate(new BlockPos(0, 0, 0), new BlockPos(radius, radius, radius));
         for (BlockPos offsetPos : offsetBox) {
 
-            double distanceSquared = (offsetPos.getSquaredDistance(x, y, z));
+            double distanceSquared = (blockPos.add(offsetPos).getSquaredDistance(x, y, z));
 
             if (distanceSquared <= radius * radius) {
 
                 BlockPos bp = new BlockPos(offsetPos.getX(), offsetPos.getY(), offsetPos.getZ());
                 BlockState blockState = world.getBlockState(bp);
-
+                //bottom
                 explosionBreakBlock(blockState, world, blockPos.add(offsetPos.getX(),-offsetPos.getY(),offsetPos.getZ()));
                 explosionBreakBlock(blockState, world, blockPos.add(-offsetPos.getX(),-offsetPos.getY(),offsetPos.getZ()));
                 explosionBreakBlock(blockState, world, blockPos.add(offsetPos.getX(),-offsetPos.getY(),-offsetPos.getZ()));
                 explosionBreakBlock(blockState, world, blockPos.add(-offsetPos.getX(),-offsetPos.getY(),-offsetPos.getZ()));
+                //top
+                explosionBreakBlock(blockState, world, blockPos.add(offsetPos.getX(),offsetPos.getY(),offsetPos.getZ()));
+                explosionBreakBlock(blockState, world, blockPos.add(-offsetPos.getX(),offsetPos.getY(),offsetPos.getZ()));
+                explosionBreakBlock(blockState, world, blockPos.add(offsetPos.getX(),offsetPos.getY(),-offsetPos.getZ()));
+                explosionBreakBlock(blockState, world, blockPos.add(-offsetPos.getX(),offsetPos.getY(),-offsetPos.getZ()));
 
             }
             if (oldp != offsetPos.getZ()) {
